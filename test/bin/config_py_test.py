@@ -67,11 +67,24 @@ class TestBinConfigPy(unittest.TestCase):
 
         self.assertTrue(
             filecmp.cmp(
-                os.path.join(SCRIPT_DIR, 'fixtures', '__init__.py'),
+                os.path.join(SCRIPT_DIR, 'fixtures', '__init__.py_'),
                 os.path.join(
                     SCRIPT_DIR,
                     CUST_MODULE_DIST,
-                    CONF_DIR_NAME, '__init__.py'
+                    CONF_DIR_NAME,
+                    '__init__.py'
+                )
+            )
+        )
+
+        self.assertTrue(
+            filecmp.cmp(
+                os.path.join(SCRIPT_DIR, 'fixtures', DEV_FILE + '_'),
+                os.path.join(
+                    SCRIPT_DIR,
+                    CUST_MODULE_DIST,
+                    CONF_DIR_NAME,
+                    DEV_FILE
                 )
             )
         )
