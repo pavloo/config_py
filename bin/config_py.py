@@ -8,8 +8,12 @@ import sys
 CONF_DIR_NAME = 'config'
 DEV_FILE = 'config-dev.py'
 ERROR_ALREADY_EXISTS_FMT = '"config" module already exists for the {} module'
-ROOT_SRC_DIR = os.path.dirname(os.path.realpath(__file__)) + '/../fixtures/root/'
-MODULE_SRC_DIR = os.path.dirname(os.path.realpath(__file__)) + '/../fixtures/module/'
+ROOT_SRC_DIR = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), '..', 'fixtures', 'root'
+)
+MODULE_SRC_DIR = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), '..', 'fixtures', 'module'
+)
 
 
 def generate_root_config():
@@ -17,8 +21,8 @@ def generate_root_config():
     conf_dir = os.path.join(os.getcwd(), CONF_DIR_NAME)
     if not os.path.exists(conf_dir):
         os.makedirs(conf_dir)
-        shutil.copy2(src_dir + '__init__.py', conf_dir)
-        shutil.copy2(src_dir + DEV_FILE, conf_dir)
+        shutil.copy2(os.path.join(src_dir, '__init__.py'), conf_dir)
+        shutil.copy2(os.path.join(src_dir, DEV_FILE), conf_dir)
         return
 
     click.secho(
