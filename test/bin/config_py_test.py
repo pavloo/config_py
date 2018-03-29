@@ -39,13 +39,23 @@ class TestBinConfigPy(unittest.TestCase):
              open(os.path.join(SCRIPT_DIR, CONF_DIR_NAME, DEV_FILE), 'r') as dest:
             self.assertEqual(src.read(), dest.read())
 
+
+    @patch('os.getcwd')
+    def test_create_config_root_fail(self, mock_get_cwd):
+        mock_get_cwd.return_value = SCRIPT_DIR
+        os.makedirs(ROOT_CONFIG_DIR)
+
+        runner = CliRunner()
+        result = runner.invoke(config_py)
+
+        self.assertEqual(1, result.exit_code)
+
     @patch('os.getcwd')
     def test_create_config_module(self, mock_get_cwd):
         mock_get_cwd.return_value = SCRIPT_DIR
         runner = CliRunner()
         result = runner.invoke(config_py, ['--module', CUST_MODULE_DIST])
 
-        print(result.output)
         self.assertEqual(0, result.exit_code)
         with open(os.path.join(SCRIPT_DIR, 'fixtures', '__init__.py'), 'r') as src, \
              open(os.path.join(
@@ -59,6 +69,16 @@ class TestBinConfigPy(unittest.TestCase):
                  CUST_MODULE_DIST,
                  CONF_DIR_NAME, DEV_FILE), 'r') as dest:
             self.assertEqual(src.read(), dest.read())
+
+    @patch('os.getcwd')
+    def test_create_config_module(self, mock_get_cwd):
+        mock_get_cwd.return_value = SCRIPT_DIR
+        os.makedirs(os.path.join(SCRIPT_DIR, CUST_MODULE_DIST, CONF_DIR_NAME))
+
+        runner = CliRunner()
+        result = runner.invoke(config_py, ['--module', CUST_MODULE_DIST])
+
+        self.assertEqual(1, result.exit_code)
 
 
 if __name__ == '__main__':

@@ -2,6 +2,7 @@
 import click
 import os
 import shutil
+import sys
 
 
 CONF_DIR_NAME = 'config'
@@ -25,6 +26,7 @@ def generate_root_config():
         err=True,
         fg='red'
     )
+    sys.exit(1)
 
 
 def generate_module_config(module):
@@ -36,7 +38,7 @@ def generate_module_config(module):
             err=True,
             fg='red'
         )
-        return
+        sys.exit(1)
 
     os.makedirs(conf_dir)
     with open(os.path.join(src_dir, '__init__.py'), 'r') as src_init, \
