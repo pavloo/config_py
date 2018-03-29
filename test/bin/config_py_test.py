@@ -8,6 +8,7 @@ from click.testing import CliRunner
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 ROOT_CONFIG_DIR = os.path.join(SCRIPT_DIR, CONF_DIR_NAME)
+CUST_MODULE_DIST = 'my_module'
 
 
 class TestBinConfigPy(unittest.TestCase):
@@ -18,12 +19,17 @@ class TestBinConfigPy(unittest.TestCase):
             ROOT_CONFIG_DIR,
             ignore_errors=True
         )
+        shutil.rmtree(
+            os.path.join(SCRIPT_DIR, CUST_MODULE_DIST),
+            ignore_errors=True
+        )
 
     @patch('os.getcwd')
     def test_create_config_root(self, mock_get_cwd):
         mock_get_cwd.return_value = SCRIPT_DIR
         runner = CliRunner()
         result = runner.invoke(config_py)
+
         self.assertEqual(0, result.exit_code)
         with open(os.path.join(ROOT_SRC_DIR, '__init__.py'), 'r') as src, \
              open(os.path.join(SCRIPT_DIR, CONF_DIR_NAME, '__init__.py'), 'r') as dest:
@@ -31,6 +37,27 @@ class TestBinConfigPy(unittest.TestCase):
 
         with open(os.path.join(ROOT_SRC_DIR, DEV_FILE), 'r') as src, \
              open(os.path.join(SCRIPT_DIR, CONF_DIR_NAME, DEV_FILE), 'r') as dest:
+            self.assertEqual(src.read(), dest.read())
+
+    @patch('os.getcwd')
+    def test_create_config_module(self, mock_get_cwd):
+        mock_get_cwd.return_value = SCRIPT_DIR
+        runner = CliRunner()
+        result = runner.invoke(config_py, ['--module', CUST_MODULE_DIST])
+
+        print(result.output)
+        self.assertEqual(0, result.exit_code)
+        with open(os.path.join(SCRIPT_DIR, 'fixtures', '__init__.py'), 'r') as src, \
+             open(os.path.join(
+                 SCRIPT_DIR,
+                 CUST_MODULE_DIST,
+                 CONF_DIR_NAME, '__init__.py'), 'r') as dest:
+            self.assertEqual(src.read(), dest.read())
+        with open(os.path.join(SCRIPT_DIR, 'fixtures', DEV_FILE), 'r') as src, \
+             open(os.path.join(
+                 SCRIPT_DIR,
+                 CUST_MODULE_DIST,
+                 CONF_DIR_NAME, DEV_FILE), 'r') as dest:
             self.assertEqual(src.read(), dest.read())
 
 
