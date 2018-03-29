@@ -1,6 +1,7 @@
 import os
 import importlib
 
+
 def import_config(glob, package=''):
     WSGI_ENV = os.getenv('WSGI_ENV', 'dev')
 

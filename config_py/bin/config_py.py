@@ -47,7 +47,7 @@ def generate_module_config(module):
 
     os.makedirs(conf_dir)
     with open(os.path.join(src_dir, '__init__.py'), 'r') as src_init, \
-         open(os.path.join(conf_dir, '__init__.py'), 'w+') as dest_init_f:
+         open(os.path.join(conf_dir, '__init__.py'), 'w+') as dest_init_f:  # nopep8
         src_init_fmt = src_init.read()
         dest_init_f.write(src_init_fmt.format(module=module))
     shutil.copy2(os.path.join(src_dir, DEV_FILE), conf_dir)
