@@ -1,17 +1,18 @@
 #!/usr/bin/env python
 import click
 import os
-import sys
 import shutil
 
 
 CONF_DIR_NAME = 'config'
 DEV_FILE = 'config-dev.py'
 ERROR_ALREADY_EXISTS_FMT = '"config" module already exists for the {} module'
+ROOT_SRC_DIR = os.path.dirname(os.path.realpath(__file__)) + '/../fixtures/root/'
+MODULE_SRC_DIR = os.path.dirname(os.path.realpath(__file__)) + '/../fixtures/module/'
 
 
 def generate_root_config():
-    src_dir = sys.path[0] + '/../fixtures/root/'
+    src_dir = ROOT_SRC_DIR
     conf_dir = os.getcwd() + '/' + CONF_DIR_NAME
     if not os.path.exists(conf_dir):
         os.makedirs(conf_dir)
@@ -27,7 +28,7 @@ def generate_root_config():
 
 
 def generate_module_config(module):
-    src_dir = sys.path[0] + '/../fixtures/module/'
+    src_dir = MODULE_SRC_DIR
     conf_dir = os.getcwd() + '/' + '/'.join(module.split('.')) + '/' + CONF_DIR_NAME + '/'
     if os.path.exists(conf_dir):
         click.secho(
