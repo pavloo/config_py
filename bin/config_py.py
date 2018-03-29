@@ -7,6 +7,7 @@ import sys
 
 CONF_DIR_NAME = 'config'
 DEV_FILE = 'config-dev.py'
+INFO_GENERATING_FMT = 'Generating "config" module for the {} module...'
 ERROR_ALREADY_EXISTS_FMT = '"config" module already exists for the {} module'
 ROOT_SRC_DIR = os.path.join(
     os.path.dirname(os.path.realpath(__file__)), '..', 'fixtures', 'root'
@@ -55,11 +56,17 @@ def generate_module_config(module):
 @click.command()
 @click.option("-m", "--module", help="python module to create a config for", default=None)
 def config_py(module):
+    click.echo(INFO_GENERATING_FMT.format('"{}"'.format(module) if module else 'root'))
     if not module:
         generate_root_config()
         return
 
     generate_module_config(module)
+    click.secho(
+        'Success!',
+        err=True,
+        fg='green'
+    )
 
 
 if __name__ == "__main__":
