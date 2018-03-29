@@ -4,6 +4,7 @@ from unittest.mock import patch
 from config_py.bin.config_py import config_py, CONF_DIR_NAME, ROOT_SRC_DIR, DEV_FILE
 import shutil
 from click.testing import CliRunner
+import filecmp
 
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -31,14 +32,20 @@ class TestBinConfigPy(unittest.TestCase):
         result = runner.invoke(config_py)
 
         self.assertEqual(0, result.exit_code)
-        with open(os.path.join(ROOT_SRC_DIR, '__init__.py'), 'r') as src, \
-             open(os.path.join(SCRIPT_DIR, CONF_DIR_NAME, '__init__.py'), 'r') as dest:
-            self.assertEqual(src.read(), dest.read())
 
-        with open(os.path.join(ROOT_SRC_DIR, DEV_FILE), 'r') as src, \
-             open(os.path.join(SCRIPT_DIR, CONF_DIR_NAME, DEV_FILE), 'r') as dest:
-            self.assertEqual(src.read(), dest.read())
+        self.assertTrue(
+            filecmp.cmp(
+                os.path.join(ROOT_SRC_DIR, '__init__.py'),
+                os.path.join(SCRIPT_DIR, CONF_DIR_NAME, '__init__.py')
+            )
+        )
 
+        self.assertTrue(
+            filecmp.cmp(
+                os.path.join(ROOT_SRC_DIR, DEV_FILE),
+                os.path.join(SCRIPT_DIR, CONF_DIR_NAME, DEV_FILE)
+            )
+        )
 
     @patch('os.getcwd')
     def test_create_config_root_fail(self, mock_get_cwd):
@@ -57,21 +64,20 @@ class TestBinConfigPy(unittest.TestCase):
         result = runner.invoke(config_py, ['--module', CUST_MODULE_DIST])
 
         self.assertEqual(0, result.exit_code)
-        with open(os.path.join(SCRIPT_DIR, 'fixtures', '__init__.py'), 'r') as src, \
-             open(os.path.join(
-                 SCRIPT_DIR,
-                 CUST_MODULE_DIST,
-                 CONF_DIR_NAME, '__init__.py'), 'r') as dest:
-            self.assertEqual(src.read(), dest.read())
-        with open(os.path.join(SCRIPT_DIR, 'fixtures', DEV_FILE), 'r') as src, \
-             open(os.path.join(
-                 SCRIPT_DIR,
-                 CUST_MODULE_DIST,
-                 CONF_DIR_NAME, DEV_FILE), 'r') as dest:
-            self.assertEqual(src.read(), dest.read())
+
+        self.assertTrue(
+            filecmp.cmp(
+                os.path.join(SCRIPT_DIR, 'fixtures', '__init__.py'),
+                os.path.join(
+                    SCRIPT_DIR,
+                    CUST_MODULE_DIST,
+                    CONF_DIR_NAME, '__init__.py'
+                )
+            )
+        )
 
     @patch('os.getcwd')
-    def test_create_config_module(self, mock_get_cwd):
+    def test_create_config_module_fail(self, mock_get_cwd):
         mock_get_cwd.return_value = SCRIPT_DIR
         os.makedirs(os.path.join(SCRIPT_DIR, CUST_MODULE_DIST, CONF_DIR_NAME))
 

@@ -49,7 +49,7 @@ def generate_module_config(module):
          open(os.path.join(conf_dir, '__init__.py'), 'w+') as dest_init_f:
         src_init_fmt = src_init.read()
         dest_init_f.write(src_init_fmt.format(module=module))
-    shutil.copy2(src_dir + DEV_FILE, conf_dir)
+    shutil.copy2(os.path.join(src_dir, DEV_FILE), conf_dir)
 
 
 @click.command()
