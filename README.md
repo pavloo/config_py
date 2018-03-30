@@ -28,7 +28,7 @@ The command above will generate a `config` package inside of `my_package`, so th
     +-- my_package
     │   \-- __init__.py
     |   \-- main.py
-    |   \-- config
+    |   +-- config
     |       \-- __init__.py
     |       \-- config-dev.py
 ```
@@ -48,4 +48,48 @@ In order to load a new configuration for a different environment, let's name it 
 ```
 WSGI_ENV=stage python -m my_package.main # prints TEST value imported from config-staging.py
 ```
-As you can see, we imported a configuration for `stage` environment by adding a separate configuration file for that environment and without making any changes in the calling code (`main.py`).
+As you can see, we imported a configuration for `stage` environment by adding a separate configuration file `config/config-stage.py` for that environment and without making any changes to the calling code.
+
+### Root configuration package
+There is a use case when you may want to have a root configuration package, and share that configuration between other packages at the root level (and those packages may have their own configurations as well). Given the next directory structure:
+```
+\-- project
+    +-- my_package
+    │   \-- __init__.py
+    |   \-- main.py
+    |   +-- config
+    +-- my_package1
+    │   \-- __init__.py
+    |   \-- main.py
+```
+in `project` directory run:
+```
+configpy
+```
+It will result in creating root `config` module:
+```
+\-- project
+    +-- my_package
+    │   \-- __init__.py
+    |   \-- main.py
+    |   +-- config
+    +-- my_package1
+    │   \-- __init__.py
+    |   \-- main.py
+    +-- config
+    |   \-- __init__.py
+    |   \-- config-dev.py
+```
+Both `my_package/main.py` and `my_package1/main.py` can import this config like this
+```
+from config import TEST
+
+print(TEST)
+```
+and running `python -m my_package.main` and `python -m my_package1.main` respectively will print a value of `TEST` from `config-dev.py` (default config file as described in **Basic usage**).
+
+### Other options
+In order to get a list of other available options, run:
+```
+configpy -h
+```
