@@ -4,7 +4,6 @@ import os
 import shutil
 import sys
 
-
 CONF_DIR_NAME = 'config'
 DEV_FILE = 'config-dev.py'
 INFO_GENERATING_FMT = 'Generating "config" module for the {} module...'
@@ -15,6 +14,8 @@ ROOT_SRC_DIR = os.path.join(
 MODULE_SRC_DIR = os.path.join(
     os.path.dirname(os.path.realpath(__file__)), '..', 'fixtures', 'module'
 )
+
+CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 
 def generate_root_config():
@@ -47,13 +48,19 @@ def generate_module_config(module):
 
     os.makedirs(conf_dir)
     with open(os.path.join(src_dir, '__init__.py'), 'r') as src_init, \
-         open(os.path.join(conf_dir, '__init__.py'), 'w+') as dest_init_f:  # nopep8
+            open(os.path.join(conf_dir, '__init__.py'), 'w+') as dest_init_f:  # nopep8
         src_init_fmt = src_init.read()
         dest_init_f.write(src_init_fmt.format(module=module))
     shutil.copy2(os.path.join(src_dir, DEV_FILE), conf_dir)
 
 
-@click.command()
+@click.command(context_settings=CONTEXT_SETTINGS)
+@click.option("-v", "--version", help="shows package version")
+def version():
+    pass
+
+
+@click.command(context_settings=CONTEXT_SETTINGS)
 @click.option("-m", "--module", help="python module to create a config for", default=None)
 def config_py(module):
     click.echo(INFO_GENERATING_FMT.format('"{}"'.format(module) if module else 'root'))
