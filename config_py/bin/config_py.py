@@ -58,7 +58,7 @@ def generate_module_config(module):
 def config_py(module):
     click.echo(INFO_GENERATING_FMT.format('"{}"'.format(module) if module else 'root'))
 
-    if  module:
+    if module:
         generate_module_config(module)
     else:
         generate_root_config()
