@@ -1,19 +1,22 @@
 from setuptools import setup
 
+long_description = """
+    A package for managing configuration files in Python applications
+    depending on environment (development, test, production), using Convention
+    Over Configuration principle.
+"""
+
 setup(name='config_py',
       description='A Python package for managing configuration files in your apps',
-      long_description='A package for managing configuration files in your apps ' +
-        'depending on environment (development, test, production), and using Convention ' +
-        'Over Configuration principle.',
-      version='0.1',
+      long_description=long_description,
       url='https://github.com/pavloo/config_py',
       author='Pavlo Osadchyi',
       author_email='posadchiy@gmail.com',
       license='MIT',
       classifiers=[
           'Development Status :: 4 - Beta',
-          'Intended Audience :: Python Developers',
-          'License :: MIT',
+          'Intended Audience :: Developers',
+          'License :: OSI Approved :: MIT License',
           'Programming Language :: Python :: 3'
       ],
       packages=[
