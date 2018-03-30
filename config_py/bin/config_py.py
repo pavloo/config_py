@@ -17,6 +17,10 @@ MODULE_SRC_DIR = os.path.join(
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
+exec(open(os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), '..', '..', 'version.py'
+)).read())
+
 
 def generate_root_config():
     src_dir = ROOT_SRC_DIR
@@ -54,14 +58,17 @@ def generate_module_config(module):
     shutil.copy2(os.path.join(src_dir, DEV_FILE), conf_dir)
 
 
-@click.command(context_settings=CONTEXT_SETTINGS)
-@click.option("-v", "--version", help="shows package version")
-def version():
-    pass
+def print_version(ctx, param, value):
+    if not value or ctx.resilient_parsing:
+        return
+    click.echo(__version__)
+    ctx.exit()
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.option("-m", "--module", help="python module to create a config for", default=None)
+@click.option('-v', '--version', is_flag=True, callback=print_version,
+              expose_value=False, is_eager=True, help="shows package version")
 def config_py(module):
     click.echo(INFO_GENERATING_FMT.format('"{}"'.format(module) if module else 'root'))
 
