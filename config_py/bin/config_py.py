@@ -57,11 +57,12 @@ def generate_module_config(module):
 @click.option("-m", "--module", help="python module to create a config for", default=None)
 def config_py(module):
     click.echo(INFO_GENERATING_FMT.format('"{}"'.format(module) if module else 'root'))
-    if not module:
-        generate_root_config()
-        return
 
-    generate_module_config(module)
+    if  module:
+        generate_module_config(module)
+    else:
+        generate_root_config()
+
     click.secho(
         'Success!',
         err=True,
