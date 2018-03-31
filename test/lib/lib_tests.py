@@ -33,7 +33,7 @@ class TestLib(unittest.TestCase):
         import_config(global_mock, 'my.package.')
 
         mock_importmodule.assert_called_with(
-            '.config-production',
+            '.config_production',
             'my.package.config'
         )
         to_be_exported['env'] = ANY

@@ -7,21 +7,6 @@ def get_environment():
     return os.getenv('WSGI_ENV', 'dev')
 
 
-def import_config(glob, package=''):
-    env = get_environment()
-
-    my_module = importlib.import_module(
-        '.config-{}'.format(env),
-        '{}config'.format(package)
-    )
-    module_dict = my_module.__dict__
-    try:
-        to_import = my_module.__all__
-    except AttributeError:
-        to_import = [name for name in module_dict if not name.startswith('_')]
-    glob.update({name: module_dict[name] for name in to_import})
-
-
 class ENV(object):
 
     @property
@@ -45,7 +30,7 @@ def import_config(glob, package=''):
     env = get_environment()
 
     my_module = importlib.import_module(
-        '.config-{}'.format(env),
+        '.config_{}'.format(env),
         '{}config'.format(package)
     )
     module_dict = my_module.__dict__
