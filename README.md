@@ -3,7 +3,19 @@
 # Disclaimer: the library is under active development and not intended to be used right now
 
 ## config_py
-*A Python package for managing application configurations based on [Convention Over Configuration](https://en.wikipedia.org/wiki/Convention_over_configuration) principle*.
+*A Python library for managing application configurations based on [Convention Over Configuration](https://en.wikipedia.org/wiki/Convention_over_configuration) principle*.
+
+This library is trying to solve the next problem: when you run an app in different environments (`development`, `test` etc), you need to load different configuration parameters based on those environments. For example, you run an app in *development* with `DB_USERNAME = 'root'`, but in *production* you would like that value to be `DB_USERNAME = os.getenv('DB_USER')`.
+
+### Notable features
+1. *Convention Over Configuration*
+2. It's just Python modules and packages
+3. Scaffolding
+
+### Prerequisites
+
+* Python 3
+* pip
 
 ### Installation
 ```
@@ -11,7 +23,7 @@ pip install config_py
 ```
 
 ### Basic usage
-This package provides a cli for scaffolding configuration setup. Assuming you have a Python package called `my_package` given the next directory structure:
+This package provides a CLI for scaffolding configuration setup. Assuming you have a Python package called `my_package` given the next directory structure:
 ```
 \-- project
     +-- my_package
