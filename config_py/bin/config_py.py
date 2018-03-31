@@ -4,17 +4,23 @@ import os
 import shutil
 import sys
 
-
 CONF_DIR_NAME = 'config'
 DEV_FILE = 'config-dev.py'
-INFO_GENERATING_FMT = 'Generating "config" module for the {} module...'
-ERROR_ALREADY_EXISTS_FMT = '"config" module already exists for the {} module'
+INFO_GENERATING_FMT = 'Generating "config" package for the {} package...'
+ERROR_ALREADY_EXISTS_FMT = '"config" package already exists for the {} package'
 ROOT_SRC_DIR = os.path.join(
     os.path.dirname(os.path.realpath(__file__)), '..', 'fixtures', 'root'
 )
-MODULE_SRC_DIR = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)), '..', 'fixtures', 'module'
+PACKAGE_SRC_DIR = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), '..', 'fixtures', 'package'
 )
+
+CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
+
+with open(os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), '..', '..', 'version.py'
+)) as f:
+    exec(f.read())
 
 
 def generate_root_config():
@@ -34,12 +40,12 @@ def generate_root_config():
     sys.exit(1)
 
 
-def generate_module_config(module):
-    src_dir = MODULE_SRC_DIR
-    conf_dir = os.path.join(os.getcwd(), *module.split('.'), CONF_DIR_NAME)
+def generate_package_config(package):
+    src_dir = PACKAGE_SRC_DIR
+    conf_dir = os.path.join(os.getcwd(), *package.split('.'), CONF_DIR_NAME)
     if os.path.exists(conf_dir):
         click.secho(
-            ERROR_ALREADY_EXISTS_FMT.format('"{}"'.format(module)),
+            ERROR_ALREADY_EXISTS_FMT.format('"{}"'.format(package)),
             err=True,
             fg='red'
         )
@@ -47,19 +53,28 @@ def generate_module_config(module):
 
     os.makedirs(conf_dir)
     with open(os.path.join(src_dir, '__init__.py'), 'r') as src_init, \
-         open(os.path.join(conf_dir, '__init__.py'), 'w+') as dest_init_f:  # nopep8
+            open(os.path.join(conf_dir, '__init__.py'), 'w+') as dest_init_f:  # nopep8
         src_init_fmt = src_init.read()
-        dest_init_f.write(src_init_fmt.format(module=module))
+        dest_init_f.write(src_init_fmt.format(package=package))
     shutil.copy2(os.path.join(src_dir, DEV_FILE), conf_dir)
 
 
-@click.command()
-@click.option("-m", "--module", help="python module to create a config for", default=None)
-def config_py(module):
-    click.echo(INFO_GENERATING_FMT.format('"{}"'.format(module) if module else 'root'))
+def print_version(ctx, param, value):
+    if not value or ctx.resilient_parsing:
+        return
+    click.echo(__version__)
+    ctx.exit()
 
-    if module:
-        generate_module_config(module)
+
+@click.command(context_settings=CONTEXT_SETTINGS)
+@click.option("-p", "--package", help="python package to create a config for", default=None)
+@click.option('-v', '--version', is_flag=True, callback=print_version,
+              expose_value=False, is_eager=True, help="shows library version")
+def config_py(package):
+    click.echo(INFO_GENERATING_FMT.format('"{}"'.format(package) if package else 'root'))
+
+    if package:
+        generate_package_config(package)
     else:
         generate_root_config()
 

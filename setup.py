@@ -1,4 +1,10 @@
+from os import path
 from setuptools import setup
+
+with open(os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), '..', '..', 'version.py'
+)) as f:
+    exec(f.read())
 
 long_description = """
     A package for managing configuration files in Python applications
@@ -9,6 +15,7 @@ long_description = """
 setup(name='config_py',
       description='A Python package for managing configuration files in your apps',
       long_description=long_description,
+      version=__version__,
       url='https://github.com/pavloo/config_py',
       author='Pavlo Osadchyi',
       author_email='posadchiy@gmail.com',
