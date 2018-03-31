@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 import imp
 import test
-from config_py.lib import import_config
+from config_py.lib import import_config, env
 
 
 class TestLib(unittest.TestCase):
@@ -37,3 +37,11 @@ class TestLib(unittest.TestCase):
             'my.package.config'
         )
         global_mock.update.assert_called_with(to_be_exported)
+
+    def test_env(self):
+        self.assertTrue(env.is_dev())
+        self.assertFalse(env.is_prod())
+        self.assertEquals('dev', env.name)
+
+        with self.assertRaises(AttributeError):
+            env.rand()
