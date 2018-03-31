@@ -1,6 +1,7 @@
 import os
 import importlib
 import re
+import logging
 
 
 def get_environment():
@@ -29,10 +30,20 @@ class ENV(object):
 def import_config(glob, package=''):
     env = get_environment()
 
-    my_module = importlib.import_module(
-        '.config_{}'.format(env),
-        '{}config'.format(package)
-    )
+    conf_module = '.config_{}'.format(env)
+    conf_package = '{}config'.format(package)
+    try:
+        my_module = importlib.import_module(
+            conf_module,
+            conf_package
+        )
+    except ModuleNotFoundError:
+        logging.warning('There is no configuration module for environment "{}"'.format(env))
+        logging.warning(
+            'Expected module to be present "{}{}"'.format(conf_package, conf_module)
+        )
+        return
+
     module_dict = my_module.__dict__
     try:
         to_import = my_module.__all__

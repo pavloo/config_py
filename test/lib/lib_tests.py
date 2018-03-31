@@ -53,3 +53,12 @@ class TestLib(unittest.TestCase):
 
         with self.assertRaises(AttributeError):
             env.rand()
+
+    @patch('os.getenv')
+    @patch('logging.warning')
+    def test_root_pick_up_different_conf(self, mock_logging, mock_getenv):
+        mock_getenv.return_value = 'stage'
+        global_mock = MagicMock()
+
+        import_config(global_mock)
+        self.assertTrue(mock_logging.called)
