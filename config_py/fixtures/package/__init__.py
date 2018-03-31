@@ -1,4 +1,4 @@
 from config_py.lib import import_config
 
 
-import_config(globals(), "{module}.")
+import_config(globals(), "{package}.")

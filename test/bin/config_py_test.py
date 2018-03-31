@@ -59,11 +59,12 @@ class TestBinConfigPy(unittest.TestCase):
         self.assertEqual(1, result.exit_code)
 
     @patch('os.getcwd')
-    def test_create_config_module(self, mock_get_cwd):
+    def test_create_config_package(self, mock_get_cwd):
         mock_get_cwd.return_value = SCRIPT_DIR
         runner = CliRunner()
-        result = runner.invoke(config_py, ['--module', CUST_MODULE_DIST])
+        result = runner.invoke(config_py, ['--package', CUST_MODULE_DIST])
 
+        print(result.exception)
         self.assertEqual(0, result.exit_code)
 
         self.assertTrue(
@@ -91,12 +92,12 @@ class TestBinConfigPy(unittest.TestCase):
         )
 
     @patch('os.getcwd')
-    def test_create_config_module_fail(self, mock_get_cwd):
+    def test_create_config_package_fail(self, mock_get_cwd):
         mock_get_cwd.return_value = SCRIPT_DIR
         os.makedirs(os.path.join(SCRIPT_DIR, CUST_MODULE_DIST, CONF_DIR_NAME))
 
         runner = CliRunner()
-        result = runner.invoke(config_py, ['--module', CUST_MODULE_DIST])
+        result = runner.invoke(config_py, ['--package', CUST_MODULE_DIST])
 
         self.assertEqual(1, result.exit_code)
 
