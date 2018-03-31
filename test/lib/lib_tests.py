@@ -1,8 +1,8 @@
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch, MagicMock, ANY
 import imp
 import test
-from config_py.lib import import_config, env
+from config_py.lib import import_config
 
 
 class TestLib(unittest.TestCase):
@@ -36,9 +36,17 @@ class TestLib(unittest.TestCase):
             '.config-production',
             'my.package.config'
         )
+        to_be_exported['env'] = ANY
         global_mock.update.assert_called_with(to_be_exported)
 
-    def test_env(self):
+    @patch('importlib.import_module')
+    def test_env(self, mock_getenv):
+        global_mock = MagicMock()
+
+        import_config(global_mock)
+
+        env = global_mock.update.call_args[0][0]['env']
+
         self.assertTrue(env.is_dev())
         self.assertFalse(env.is_prod())
         self.assertEquals('dev', env.name)

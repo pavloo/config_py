@@ -41,4 +41,21 @@ class ENV(object):
         return _missing
 
 
-env = ENV()
+def import_config(glob, package=''):
+    env = get_environment()
+
+    my_module = importlib.import_module(
+        '.config-{}'.format(env),
+        '{}config'.format(package)
+    )
+    module_dict = my_module.__dict__
+    try:
+        to_import = my_module.__all__
+    except AttributeError:
+        to_import = [name for name in module_dict if not name.startswith('_')]
+
+    env = ENV()
+    d = {name: module_dict[name] for name in to_import}
+    d['env'] = ENV()
+
+    glob.update(d)
