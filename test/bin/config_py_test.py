@@ -5,6 +5,7 @@ from config_py.bin.config_py import config_py, CONF_DIR_NAME, ROOT_SRC_DIR, DEV_
 import shutil
 from click.testing import CliRunner
 import filecmp
+import re
 
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -98,6 +99,13 @@ class TestBinConfigPy(unittest.TestCase):
         result = runner.invoke(config_py, ['--module', CUST_MODULE_DIST])
 
         self.assertEqual(1, result.exit_code)
+
+    def test_get_version(self):
+        runner = CliRunner()
+        result = runner.invoke(config_py, ['--version'])
+
+        self.assertEqual(0, result.exit_code)
+        self.assertRegexpMatches(result.output, re.compile('\d\.\d\.\d'))
 
 
 if __name__ == '__main__':

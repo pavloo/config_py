@@ -1,9 +1,10 @@
 from os import path
 from setuptools import setup
 
-exec(open(path.join(
-    path.dirname(path.realpath(__file__)), 'version.py'
-)).read())
+with open(os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), '..', '..', 'version.py'
+)) as f:
+    exec(f.read())
 
 long_description = """
     A package for managing configuration files in Python applications

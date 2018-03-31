@@ -17,9 +17,10 @@ MODULE_SRC_DIR = os.path.join(
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
-exec(open(os.path.join(
+with open(os.path.join(
     os.path.dirname(os.path.realpath(__file__)), '..', '..', 'version.py'
-)).read())
+)) as f:
+    exec(f.read())
 
 
 def generate_root_config():
