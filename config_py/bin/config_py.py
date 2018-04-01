@@ -5,7 +5,7 @@ import shutil
 import sys
 
 CONF_DIR_NAME = 'config'
-DEV_FILE = 'config-dev.py'
+DEV_FILE = 'config_dev.py'
 INFO_GENERATING_FMT = 'Generating "config" package for the {} package...'
 ERROR_ALREADY_EXISTS_FMT = '"config" package already exists for the {} package'
 ROOT_SRC_DIR = os.path.join(
