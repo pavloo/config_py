@@ -29,7 +29,9 @@ class ENV(object):
         return _missing
 
 
-def import_config(glob, package='', env_var_name='WSGI_ENV'):
+def import_config(glob, **kwargs):
+    package = kwargs.get('package', '')
+    env_var_name = kwargs.get('env_var_name', 'WSGI_ENV')
     env = get_environment(env_var_name)
 
     conf_module = '.config_{}'.format(env)

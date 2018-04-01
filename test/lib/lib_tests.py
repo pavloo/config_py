@@ -30,7 +30,7 @@ class TestLib(unittest.TestCase):
         }
         mock_importmodule.return_value.__dict__ = to_be_exported
 
-        import_config(global_mock, 'my.package.')
+        import_config(global_mock, package='my.package.')
 
         mock_importmodule.assert_called_with(
             '.config_production',
@@ -69,5 +69,5 @@ class TestLib(unittest.TestCase):
         mock_getenv.return_value = 'stage'
         global_mock = MagicMock()
 
-        import_config(global_mock, '', env_var_name)
+        import_config(global_mock, env_var_name=env_var_name)
         mock_getenv.assert_called_with(env_var_name, 'dev')
