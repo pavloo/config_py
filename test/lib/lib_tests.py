@@ -65,9 +65,9 @@ class TestLib(unittest.TestCase):
 
     @patch('os.getenv')
     def test_custom_env_var_name(self, mock_getenv):
-        env_var_name = 'MY_ENV'
+        env_var = 'MY_ENV'
         mock_getenv.return_value = 'stage'
         global_mock = MagicMock()
 
-        import_config(global_mock, env_var_name=env_var_name)
-        mock_getenv.assert_called_with(env_var_name, 'dev')
+        import_config(global_mock, env_var=env_var)
+        mock_getenv.assert_called_with(env_var, 'dev')

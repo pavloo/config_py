@@ -1,7 +1,7 @@
 import unittest
 import os
 from unittest.mock import patch
-from config_py.bin.config_py import config_py, CONF_DIR_NAME, ROOT_SRC_DIR, DEV_FILE
+from config_py.bin.config_py import config_py, CONF_DIR_NAME, DEV_FILE
 import shutil
 from click.testing import CliRunner
 import filecmp
@@ -49,7 +49,6 @@ class TestBinConfigPy(unittest.TestCase):
         )
 
     @patch('os.getcwd')
-    @unittest.skip
     def test_create_config_with_env_root(self, mock_get_cwd):
         mock_get_cwd.return_value = SCRIPT_DIR
         runner = CliRunner()
@@ -59,14 +58,14 @@ class TestBinConfigPy(unittest.TestCase):
 
         self.assertTrue(
             filecmp.cmp(
-                os.path.join(SCRIPT_DIR, 'fixtures', 'root_with_env', '__init__.py_'),
+                os.path.join(SCRIPT_DIR, 'fixtures', 'root', 'env', '__init__.py_'),
                 os.path.join(SCRIPT_DIR, CONF_DIR_NAME, '__init__.py')
             )
         )
 
         self.assertTrue(
             filecmp.cmp(
-                os.path.join(ROOT_SRC_DIR, DEV_FILE),
+                os.path.join(SCRIPT_DIR, 'fixtures', 'root', DEV_FILE + '_'),
                 os.path.join(SCRIPT_DIR, CONF_DIR_NAME, DEV_FILE)
             )
         )
@@ -91,7 +90,6 @@ class TestBinConfigPy(unittest.TestCase):
             catch_exceptions=False
         )
 
-        print(result.exception)
         self.assertEqual(0, result.exit_code)
 
         self.assertTrue(
