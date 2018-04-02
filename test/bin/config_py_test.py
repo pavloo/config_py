@@ -30,13 +30,36 @@ class TestBinConfigPy(unittest.TestCase):
     def test_create_config_root(self, mock_get_cwd):
         mock_get_cwd.return_value = SCRIPT_DIR
         runner = CliRunner()
-        result = runner.invoke(config_py)
+        result = runner.invoke(config_py, catch_exceptions=False)
 
         self.assertEqual(0, result.exit_code)
 
         self.assertTrue(
             filecmp.cmp(
-                os.path.join(ROOT_SRC_DIR, '__init__.py'),
+                os.path.join(SCRIPT_DIR, 'fixtures', 'root', '__init__.py_'),
+                os.path.join(SCRIPT_DIR, CONF_DIR_NAME, '__init__.py')
+            )
+        )
+
+        self.assertTrue(
+            filecmp.cmp(
+                os.path.join(SCRIPT_DIR, 'fixtures', 'root', DEV_FILE + '_'),
+                os.path.join(SCRIPT_DIR, CONF_DIR_NAME, DEV_FILE)
+            )
+        )
+
+    @patch('os.getcwd')
+    @unittest.skip
+    def test_create_config_with_env_root(self, mock_get_cwd):
+        mock_get_cwd.return_value = SCRIPT_DIR
+        runner = CliRunner()
+        result = runner.invoke(config_py, ['--env_var', 'MY_ENV'], catch_exceptions=False)
+
+        self.assertEqual(0, result.exit_code)
+
+        self.assertTrue(
+            filecmp.cmp(
+                os.path.join(SCRIPT_DIR, 'fixtures', 'root_with_env', '__init__.py_'),
                 os.path.join(SCRIPT_DIR, CONF_DIR_NAME, '__init__.py')
             )
         )
@@ -62,14 +85,18 @@ class TestBinConfigPy(unittest.TestCase):
     def test_create_config_package(self, mock_get_cwd):
         mock_get_cwd.return_value = SCRIPT_DIR
         runner = CliRunner()
-        result = runner.invoke(config_py, ['--package', CUST_MODULE_DIST])
+        result = runner.invoke(
+            config_py,
+            ['--package', CUST_MODULE_DIST],
+            catch_exceptions=False
+        )
 
         print(result.exception)
         self.assertEqual(0, result.exit_code)
 
         self.assertTrue(
             filecmp.cmp(
-                os.path.join(SCRIPT_DIR, 'fixtures', '__init__.py_'),
+                os.path.join(SCRIPT_DIR, 'fixtures', 'package', '__init__.py_'),
                 os.path.join(
                     SCRIPT_DIR,
                     CUST_MODULE_DIST,
@@ -81,7 +108,7 @@ class TestBinConfigPy(unittest.TestCase):
 
         self.assertTrue(
             filecmp.cmp(
-                os.path.join(SCRIPT_DIR, 'fixtures', DEV_FILE + '_'),
+                os.path.join(SCRIPT_DIR, 'fixtures', 'package', DEV_FILE + '_'),
                 os.path.join(
                     SCRIPT_DIR,
                     CUST_MODULE_DIST,
@@ -97,13 +124,21 @@ class TestBinConfigPy(unittest.TestCase):
         os.makedirs(os.path.join(SCRIPT_DIR, CUST_MODULE_DIST, CONF_DIR_NAME))
 
         runner = CliRunner()
-        result = runner.invoke(config_py, ['--package', CUST_MODULE_DIST])
+        result = runner.invoke(
+            config_py,
+            ['--package', CUST_MODULE_DIST],
+            catch_exceptions=False
+        )
 
         self.assertEqual(1, result.exit_code)
 
     def test_get_version(self):
         runner = CliRunner()
-        result = runner.invoke(config_py, ['--version'])
+        result = runner.invoke(
+            config_py,
+            ['--version'],
+            catch_exceptions=False
+        )
 
         self.assertEqual(0, result.exit_code)
         self.assertRegexpMatches(result.output, re.compile('\d\.\d\.\d'))

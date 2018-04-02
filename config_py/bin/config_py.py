@@ -23,7 +23,7 @@ with open(os.path.join(
     exec(f.read())
 
 
-def generate_root_config():
+def generate_root_config(env_var_name):
     src_dir = ROOT_SRC_DIR
     conf_dir = os.path.join(os.getcwd(), CONF_DIR_NAME)
     if not os.path.exists(conf_dir):
@@ -68,15 +68,21 @@ def print_version(ctx, param, value):
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.option("-p", "--package", help="python package to create a config for", default=None)
+@click.option(
+    "-e",
+    "--env_var",
+    help="env variable to get the name of environment from",
+    default='WSGI_ENV'
+)
 @click.option('-v', '--version', is_flag=True, callback=print_version,
               expose_value=False, is_eager=True, help="shows library version")
-def config_py(package):
+def config_py(package, env_var):
     click.echo(INFO_GENERATING_FMT.format('"{}"'.format(package) if package else 'root'))
 
     if package:
         generate_package_config(package)
     else:
-        generate_root_config()
+        generate_root_config(env_var)
 
     click.secho(
         'Success!',
