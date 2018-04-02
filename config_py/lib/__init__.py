@@ -4,15 +4,18 @@ import re
 import logging
 
 
-def get_environment():
-    return os.getenv('WSGI_ENV', 'dev')
+def get_environment(env_var_name):
+    return os.getenv(env_var_name, 'dev')
 
 
 class ENV(object):
 
+    def __init__(self, env):
+        self.env = env
+
     @property
     def name(self):
-        return get_environment()
+        return self.env
 
     def __getattr__(self, name):
 
@@ -20,15 +23,16 @@ class ENV(object):
             raise AttributeError('No attribute with name: {}'.format(name))
 
         def _missing(*args, **kwargs):
-            env = get_environment()
             _, asserted_env = name.split('_')
-            return asserted_env == env
+            return asserted_env == self.env
 
         return _missing
 
 
-def import_config(glob, package=''):
-    env = get_environment()
+def import_config(glob, **kwargs):
+    package = kwargs.get('package', '')
+    env_var_name = kwargs.get('env_var', 'WSGI_ENV')
+    env = get_environment(env_var_name)
 
     conf_module = '.config_{}'.format(env)
     conf_package = '{}config'.format(package)
@@ -50,8 +54,7 @@ def import_config(glob, package=''):
     except AttributeError:
         to_import = [name for name in module_dict if not name.startswith('_')]
 
-    env = ENV()
     d = {name: module_dict[name] for name in to_import}
-    d['env'] = ENV()
+    d['env'] = ENV(env)
 
     glob.update(d)
