@@ -33,11 +33,16 @@ def generate_config(arguments_str, package):
         )
         sys.exit(1)
 
+    click.echo('Generating config at {}'.format(conf_dir))
+
     os.makedirs(conf_dir)
     with open(os.path.join(src_dir, '__init__.py'), 'r') as src_init, \
             open(os.path.join(conf_dir, '__init__.py'), 'w+') as dest_init_f:  # nopep8
+        click.echo('Setting __init__ file at {}'.format(os.path.join(conf_dir, '__init__.py')))
         src_init_fmt = src_init.read()
         dest_init_f.write(src_init_fmt.format(arguments_str=arguments_str))
+
+    click.echo('Creating config_dev at {}'.format(os.path.join(conf_dir, DEV_FILE)))
     shutil.copy2(os.path.join(src_dir, DEV_FILE), conf_dir)
 
 
