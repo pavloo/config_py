@@ -14,7 +14,7 @@ SRC_DIR = os.path.join(
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 with open(os.path.join(
-    os.path.dirname(os.path.realpath(__file__)), '..', '..', 'version.py'
+    os.path.dirname(os.path.realpath(__file__)), '..', '..', 'version', '__init__.py'
 )) as f:
     exec(f.read())
 
@@ -27,14 +27,14 @@ def generate_config(arguments_str, package):
         conf_dir = os.path.join(os.getcwd(), CONF_DIR_NAME)
     if os.path.exists(conf_dir):
         click.secho(
-            ERROR_ALREADY_EXISTS_FMT.format('"{}"'.format(package)),
+            ERROR_ALREADY_EXISTS_FMT.format('"{}"'.format(package) if package else 'root'),
             err=True,
             fg='red'
         )
         sys.exit(1)
 
     os.makedirs(conf_dir)
-    with open(os.path.join(src_dir, '__init__.py_'), 'r') as src_init, \
+    with open(os.path.join(src_dir, '__init__.py'), 'r') as src_init, \
             open(os.path.join(conf_dir, '__init__.py'), 'w+') as dest_init_f:  # nopep8
         src_init_fmt = src_init.read()
         dest_init_f.write(src_init_fmt.format(arguments_str=arguments_str))
