@@ -1,3 +1,7 @@
+
+
+![Library logo](logo.png)
+
 [![Build Status](https://travis-ci.org/pavloo/config_py.svg?branch=master)](https://travis-ci.org/pavloo/config_py)
 
 # Disclaimer: the library is under active development and not intended to be used right now
