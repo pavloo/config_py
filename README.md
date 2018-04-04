@@ -60,6 +60,20 @@ and you run `main.py`, the constant `TEST` is going to be imported from `config_
 python -m my_package.main # prints TEST value imported from config_dev.py
 ```
 
+#### Adding new environment
+
+If you want something more than default `dev` you should create new config file inside package's `config` directory:
+```bash
+touch {your_module}/config/config_prod.py
+```
+
+Then put the same `TEST` variable there:
+```python
+TEST='NOPE'
+```
+
+If you run your module with `WSGI_EVN` set to `prod` module will pick up values from this file.
+
 #### Loading a configuration for a different environment
 In order to load a new configuration for a different environment, let's name it `stage` environment, you have to create a file `config/config_stage.py`, and provide `WSGI_ENV` env variable like this:
 ```
