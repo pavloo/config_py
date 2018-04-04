@@ -2,8 +2,6 @@
 
 [![Build Status](https://travis-ci.org/pavloo/config_py.svg?branch=master)](https://travis-ci.org/pavloo/config_py)
 
-# Disclaimer: the library is under active development and not intended to be used right now
-
 ## config_py
 *A Python library for managing application configurations based on [Convention Over Configuration](https://en.wikipedia.org/wiki/Convention_over_configuration) principle*.
 
