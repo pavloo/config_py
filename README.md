@@ -114,3 +114,8 @@ In order to get a list of other available options, run:
 ```
 configpy -h
 ```
+
+If you want to use different name of ENV_VAR providing environment setup (`dev`, `stage`...) than `WSGI_ENV` you can use `-e` or `--env_var` option while generating config:
+```
+configpy -p my_module -e CURRENT_ENVIRONMENT
+```
