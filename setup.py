@@ -9,7 +9,7 @@ long_description = """
     Over Configuration principle.
 """
 
-setup(name='config_py',
+setup(name='configpy',
       description='A Python package for managing configuration files in your apps',
       long_description=long_description,
       version=version.__version__,
