@@ -8,3 +8,9 @@ before_install:
 
 script:
   - nosetests
+
+deploy:
+  provider: script
+  script: deploy.sh
+  on:
+    branch: master
