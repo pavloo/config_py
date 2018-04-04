@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/pavloo/config_py.svg?branch=master)](https://travis-ci.org/pavloo/config_py)
 
-## configpy
+## config_py
 *A Python library for managing application configurations based on [Convention Over Configuration](https://en.wikipedia.org/wiki/Convention_over_configuration) principle*.
 
 This library is trying to solve the next problem: when you run an app in different environments (`development`, `test` etc.), you need to load different configuration parameters based on those environments. For example, you run an app in *development* with `DB_USERNAME = 'root'`, but in *production* you would like that value to be `DB_USERNAME = os.getenv('DB_USER')`.
@@ -19,7 +19,7 @@ This library is trying to solve the next problem: when you run an app in differe
 
 ### Installation
 ```
-pip install configpy
+pip install config-py
 ```
 
 ### Basic usage
@@ -32,7 +32,7 @@ This package provides a CLI for scaffolding configuration setup. Assuming you ha
 ```
 If you are in `project` directory, in order to generate a configuration for `my_package`, run:
 ```
-configpy -p my_package
+config_py -p my_package
 ```
 The command above will generate a `config` package inside of `my_package`, so that directory structure looks like this after:
 ```
@@ -95,7 +95,7 @@ There is a use case when you may want to have a root configuration package, and 
 ```
 in `project` directory run:
 ```
-configpy
+config_py
 ```
 It will result in creating root `config` module:
 ```
@@ -122,12 +122,12 @@ and running `python -m my_package.main` and `python -m my_package1.main` respect
 ### Other options
 In order to get a list of other available options, run:
 ```
-configpy -h
+config_py -h
 ```
 
 If you want to use different name of ENV_VAR providing environment setup (`dev`, `stage`...) than `WSGI_ENV` you can use `-e` or `--env_var` option while generating config:
 ```
-configpy -p my_module -e NAME_OF_ENVIRONMENT_VAR
+config_py -p my_module -e NAME_OF_ENVIRONMENT_VAR
 ```
 ### License
 This project is licensed under the [MIT License](LICENSE).
