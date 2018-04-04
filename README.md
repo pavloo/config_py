@@ -19,7 +19,7 @@ This library is trying to solve the next problem: when you run an app in differe
 
 ### Installation
 ```
-pip install config_py
+pip install config-py
 ```
 
 ### Basic usage
