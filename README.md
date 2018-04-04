@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/pavloo/config_py.svg?branch=master)](https://travis-ci.org/pavloo/config_py)
 
-## config_py
+## configpy
 *A Python library for managing application configurations based on [Convention Over Configuration](https://en.wikipedia.org/wiki/Convention_over_configuration) principle*.
 
 This library is trying to solve the next problem: when you run an app in different environments (`development`, `test` etc.), you need to load different configuration parameters based on those environments. For example, you run an app in *development* with `DB_USERNAME = 'root'`, but in *production* you would like that value to be `DB_USERNAME = os.getenv('DB_USER')`.
@@ -19,7 +19,7 @@ This library is trying to solve the next problem: when you run an app in differe
 
 ### Installation
 ```
-pip install config_py
+pip install configpy
 ```
 
 ### Basic usage
@@ -59,6 +59,20 @@ and you run `main.py`, the constant `TEST` is going to be imported from `config_
 ```
 python -m my_package.main # prints TEST value imported from config_dev.py
 ```
+
+#### Adding new environment
+
+If you want something more than default `dev` you should create new config file inside package's `config` directory:
+```bash
+touch {your_module}/config/config_prod.py
+```
+
+Then put the same `TEST` variable there:
+```python
+TEST='NOPE'
+```
+
+If you run your module with `WSGI_EVN` set to `prod` module will pick up values from this file.
 
 #### Loading a configuration for a different environment
 In order to load a new configuration for a different environment, let's name it `stage` environment, you have to create a file `config/config_stage.py`, and provide `WSGI_ENV` env variable like this:
