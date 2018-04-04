@@ -36,14 +36,14 @@ class TestBinConfigPy(unittest.TestCase):
 
         self.assertTrue(
             filecmp.cmp(
-                os.path.join(SCRIPT_DIR, 'fixtures', 'root', '__init__.py_'),
+                os.path.join(SCRIPT_DIR, 'fixtures', 'root', '__init__.py'),
                 os.path.join(SCRIPT_DIR, CONF_DIR_NAME, '__init__.py')
             )
         )
 
         self.assertTrue(
             filecmp.cmp(
-                os.path.join(SCRIPT_DIR, 'fixtures', 'root', DEV_FILE + '_'),
+                os.path.join(SCRIPT_DIR, 'fixtures', 'root', DEV_FILE),
                 os.path.join(SCRIPT_DIR, CONF_DIR_NAME, DEV_FILE)
             )
         )
@@ -58,14 +58,14 @@ class TestBinConfigPy(unittest.TestCase):
 
         self.assertTrue(
             filecmp.cmp(
-                os.path.join(SCRIPT_DIR, 'fixtures', 'root', 'env', '__init__.py_'),
+                os.path.join(SCRIPT_DIR, 'fixtures', 'root', 'env', '__init__.py'),
                 os.path.join(SCRIPT_DIR, CONF_DIR_NAME, '__init__.py')
             )
         )
 
         self.assertTrue(
             filecmp.cmp(
-                os.path.join(SCRIPT_DIR, 'fixtures', 'root', DEV_FILE + '_'),
+                os.path.join(SCRIPT_DIR, 'fixtures', 'root', DEV_FILE),
                 os.path.join(SCRIPT_DIR, CONF_DIR_NAME, DEV_FILE)
             )
         )
@@ -94,7 +94,7 @@ class TestBinConfigPy(unittest.TestCase):
 
         self.assertTrue(
             filecmp.cmp(
-                os.path.join(SCRIPT_DIR, 'fixtures', 'package', '__init__.py_'),
+                os.path.join(SCRIPT_DIR, 'fixtures', 'package', '__init__.py'),
                 os.path.join(
                     SCRIPT_DIR,
                     CUST_MODULE_DIST,
@@ -106,7 +106,7 @@ class TestBinConfigPy(unittest.TestCase):
 
         self.assertTrue(
             filecmp.cmp(
-                os.path.join(SCRIPT_DIR, 'fixtures', 'package', DEV_FILE + '_'),
+                os.path.join(SCRIPT_DIR, 'fixtures', 'package', DEV_FILE),
                 os.path.join(
                     SCRIPT_DIR,
                     CUST_MODULE_DIST,

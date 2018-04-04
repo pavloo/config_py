@@ -34,17 +34,15 @@ def import_config(glob, **kwargs):
     env_var_name = kwargs.get('env_var', 'WSGI_ENV')
     env = get_environment(env_var_name)
 
-    conf_module = '.config_{}'.format(env)
-    conf_package = '{}config'.format(package)
+    conf_module = '{}config.config_{}'.format(package, env)
     try:
         my_module = importlib.import_module(
-            conf_module,
-            conf_package
+            conf_module
         )
-    except ModuleNotFoundError:
+    except ImportError:
         logging.warning('There is no configuration module for environment "{}"'.format(env))
         logging.warning(
-            'Expected module to be present "{}{}"'.format(conf_package, conf_module)
+            'Expected module to be present "{}"'.format(conf_module)
         )
         return
 
