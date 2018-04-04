@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/pavloo/config_py.svg?branch=master)](https://travis-ci.org/pavloo/config_py)
 
-## config_py
+## configpy
 *A Python library for managing application configurations based on [Convention Over Configuration](https://en.wikipedia.org/wiki/Convention_over_configuration) principle*.
 
 This library is trying to solve the next problem: when you run an app in different environments (`development`, `test` etc.), you need to load different configuration parameters based on those environments. For example, you run an app in *development* with `DB_USERNAME = 'root'`, but in *production* you would like that value to be `DB_USERNAME = os.getenv('DB_USER')`.
