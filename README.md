@@ -9,7 +9,7 @@
 ## config_py
 *A Python library for managing application configurations based on [Convention Over Configuration](https://en.wikipedia.org/wiki/Convention_over_configuration) principle*.
 
-This library is trying to solve the next problem: when you run an app in different environments (`development`, `test` etc), you need to load different configuration parameters based on those environments. For example, you run an app in *development* with `DB_USERNAME = 'root'`, but in *production* you would like that value to be `DB_USERNAME = os.getenv('DB_USER')`.
+This library is trying to solve the next problem: when you run an app in different environments (`development`, `test` etc.), you need to load different configuration parameters based on those environments. For example, you run an app in *development* with `DB_USERNAME = 'root'`, but in *production* you would like that value to be `DB_USERNAME = os.getenv('DB_USER')`.
 
 ### Notable features
 1. *Convention Over Configuration*
@@ -48,6 +48,11 @@ The command above will generate a `config` package inside of `my_package`, so th
     |       \-- __init__.py
     |       \-- config-dev.py
 ```
+Let's put sample configuration value in newly created `config-dev.py`:
+```
+TEST=True
+```
+
 Now, if you import configuration in `main.py`:
 ```python
 from .config import TEST
@@ -62,7 +67,7 @@ python -m my_package.main # prints TEST value imported from config-dev.py
 #### Loading a configuration for a different environment
 In order to load a new configuration for a different environment, let's name it `stage` environment, you have to create a file `config/config-stage.py`, and provide `WSGI_ENV` env variable like this:
 ```
-WSGI_ENV=stage python -m my_package.main # prints TEST value imported from config-staging.py
+WSGI_ENV=stage python -m my_package.main # prints TEST value imported from config-stage.py
 ```
 As you can see, we imported a configuration for `stage` environment by adding a separate configuration file `config/config-stage.py` for that environment and without making any changes to the calling code.
 
