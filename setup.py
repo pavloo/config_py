@@ -9,7 +9,7 @@ long_description = """
     Over Configuration principle.
 """
 
-setup(name='configpy',
+setup(name='config-py',
       description='A Python package for managing configuration files in your apps',
       long_description=long_description,
       version=version.__version__,
@@ -36,7 +36,7 @@ setup(name='configpy',
       ],
       entry_points={
           'console_scripts': [
-              'configpy=config_py.bin.config_py:config_py'
+              'config_py=config_py.bin.config_py:config_py'
           ]
       }
 )
